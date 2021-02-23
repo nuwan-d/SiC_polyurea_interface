@@ -1,0 +1,16 @@
+SiC-Pu
+  System = SiC-Pu interaction
+  PREC   = Normal           # recommend to use PREC=Normal or PREC=Accurate
+  ENCUT = 1100              # Kinetic Energy Cutoff in eV
+  LREAL = Auto            # LREAL determines whether the projection operators are evaluated in real-space or in reciprocal space.
+  NSW      = 0           # NSW sets the maximum number of ionic steps; 300 
+  IBRION   = -1             # determines how the ions are updated and moved;  -1: no update; 2: ionic relaxation (conjugate gradient algorithm).
+  ISIF     = 2             # Stress calculation and Relaxation of DOFs: for 2: DoFs positions (Y), cell shape (N), cell volume (N)
+  ISMEAR = 0               # Partial Occupancies for each Orbital -5 DOS, -2 from file, -1 Fermi Smear, 0 Gaussian Smear
+  SIGMA    = 0.1          # Insulators/semiconductors=0.1  metals=0.05
+  NPAR = 16 # ~sqrt(# of cores); NCORE = # of cores/NPAR
+                
+#special:
+#  LVHAR = .TRUE.
+#  LVTOT = .TRUE.
+                     
