@@ -1,0 +1,62 @@
+
+# Created by Nuwan Dewapriya on 2021-02-22
+##########################################
+
+units 		metal
+boundary	p p p
+atom_style	full
+
+read_data 	"coord.data"
+include         "pu_sic_para.params"
+kspace_style	pppm 1e-06
+
+group pu type 1 2 3 4 5 6 7 8 9 10 11
+group sic type 12 13
+
+########################################
+
+variable tstp equal 0.001
+timestep ${tstp}
+variable tdamp equal "v_tstp * 100"
+variable pdamp equal "v_tstp * 1000"
+
+########################################
+
+fix  	1 all nve/limit 0.001
+fix  	2 all langevin 0.1 0.1 ${tdamp} 90429997
+
+dump          1 all atom 1000 pu_sic_separation.lammpstrj
+thermo 1000
+
+run 100
+
+########################################
+
+variable z_pu_avg equal xcm(pu,z)
+variable z_pu equal bound(pu,zmin)
+variable z_top_al equal bound(sic,zmax)
+variable dz equal "v_z_pu - v_z_top_al"
+variable dz_avg equal "v_z_pu_avg - v_z_top_al"
+
+variable E_total equal etotal
+
+fix           write all print 100 "${dz} ${dz_avg} ${E_total}" file energy.dump screen no
+
+thermo_style custom step temp press ke pe epair etotal v_dz v_dz_avg evdwl ecoul epair
+
+fix freeze all setforce 0.0 0.0 0.0
+
+#########################################
+
+unfix 1
+unfix 2
+
+fix 	move_down pu move linear 0.0 0.0 -1.0 units box
+
+run 800
+#########################################
+
+unfix   move_down
+fix 	move_pu pu move linear 0.0 0.0 1.0 units box
+
+run 10000
