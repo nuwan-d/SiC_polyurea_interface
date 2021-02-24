@@ -12,7 +12,6 @@ variable	flag_charged	index	1
 
 # Potentials
 
-#pair_style	lj/class2/coul/long ${cutoff} ${charge_cutoff}  
 pair_style	hybrid vashishta lj/class2/coul/long ${cutoff} ${charge_cutoff} 
 bond_style	class2
 angle_style	class2
@@ -61,8 +60,6 @@ pair_coeff	10	13	lj/class2/coul/long	0.002122943	4.035743504
 pair_coeff	11	13	lj/class2/coul/long	0.002209601	4.075766361
 
 
-
-					
 												
 # Bond Coeffs												
 												
